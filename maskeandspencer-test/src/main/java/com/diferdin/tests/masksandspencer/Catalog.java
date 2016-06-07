@@ -2,6 +2,7 @@ package com.diferdin.tests.masksandspencer;
 
 import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
+import java.security.cert.PKIXRevocationChecker;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,16 @@ public class Catalog {
         }
 
         return 0.0;
+    }
+
+    public Optional<Product> getProduct(String productCode) {
+        Optional<Product> product = productCatalog.stream().filter(p -> productCode.equals(p.getCode())).findFirst();
+
+        if(product.isPresent()) {
+            return product;
+        }
+
+        return Optional.empty();
     }
 
     @Override

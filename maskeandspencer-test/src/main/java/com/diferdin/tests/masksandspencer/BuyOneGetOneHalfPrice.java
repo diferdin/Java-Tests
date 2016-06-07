@@ -1,8 +1,12 @@
 package com.diferdin.tests.masksandspencer;
 
+import com.diferdin.tests.masksandspencer.exception.ShoppingException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -15,18 +19,23 @@ public class BuyOneGetOneHalfPrice extends Offer {
     }
 
     @Override
-    public double applyToList(List<Product> shoppingList) {
+    public double applyToList(ShoppingList shoppingList) {
         double discount = 0.0;
 
-        List<Product> productsEligibleForOffer = shoppingList.stream().filter(p -> offerSubject.equals(p.getName()))
-                .collect(Collectors.toList());
+        Optional<String> productCodeOnOffer = shoppingList.getProducts()
+                .stream()
+                .filter(p -> offerSubject.equals(p))
+                .map(p -> p.getCode()).findFirst();
 
-        int itemsToDiscount = productsEligibleForOffer.size()/2;
+        Optional<Product> productOnOfferOptional = shoppingList.getProduct(productCodeOnOffer.get());
 
-        for(int i = 0; i < itemsToDiscount; i++) {
-            Product productOnDiscount = productsEligibleForOffer.get(i);
-            discount += productOnDiscount.getPrice()/2d;
+        if(!productOnOfferOptional.isPresent()) {
+            throw new ShoppingException("Cannot find product on offer in list");
         }
+
+        Product productOnOffer = productOnOfferOptional.get();
+        double itemsToDiscount = shoppingList.getMultiplicity(productOnOffer.getCode()) / 2;
+        discount += productOnOffer.getPrice() * itemsToDiscount;
 
         return round(discount);
     }

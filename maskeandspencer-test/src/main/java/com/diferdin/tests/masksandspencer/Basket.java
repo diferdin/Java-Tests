@@ -4,7 +4,9 @@ import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by antonio on 01/06/2016.
@@ -14,28 +16,21 @@ public class Basket {
     private Charge extraCharges;
     private List<Offer> offers;
 
-    private Map<String, Integer> shoppingList;
-    private double total;
+    private ShoppingList shoppingList;
 
-    public Basket(Map<String, Integer> shoppingList, Catalog productCatalog, List<Offer> offers, Charge extraCharges) {
+    public Basket(ShoppingList shoppingList, Catalog productCatalog, List<Offer> offers, Charge extraCharges) {
         if(shoppingList == null) {
-            throw new ShoppingException("Shopping list cannot be null");
+            this.shoppingList = new ShoppingList();
         }
 
         if(productCatalog == null) {
             throw new ShoppingException("Catalog cannot be null");
         }
 
-        if(shoppingList.size() == 0) {
-            this.shoppingList = Collections.emptyMap();
-            return;
-        }
-
         this.productCatalog = productCatalog;
         this.offers = offers;
         this.extraCharges = extraCharges;
         this.shoppingList = shoppingList;
-        total = calculateListTotal();
 
         if(!productsAreInCatalog()) {
             throw new ShoppingException("Some products in the shopping list are not in the catalog.");
@@ -45,18 +40,31 @@ public class Basket {
 
     private boolean productsAreInCatalog() {
         boolean result = true;
-        Set<String> productCodes = shoppingList.keySet();
+        Set<Product> productCodes = shoppingList.getProducts();
 
-        for(String code : productCodes) {
-            result = result && productCatalog.contains(code);
+        for(Product product : productCodes) {
+            result = result && productCatalog.contains(product.getCode());
         }
+
+        return result;
     }
 
-    public boolean add(Product product) {
+    public boolean add(String productCode) {
+        Optional<Product> product = productCatalog.getProduct(productCode);
 
-        if(shoppingList.put(product.getCode())) {
-            total += product.getPrice();
+        if(product.isPresent()) {
+            shoppingList.add(product.get());
             return true;
+        }
+        return false;
+    }
+
+    public boolean remove(String productCode) {
+
+        Optional<Product> product = productCatalog.getProduct(productCode);
+
+        if(product.isPresent()) {
+            return shoppingList.remove(product.get());
         }
 
         return false;
@@ -64,14 +72,15 @@ public class Basket {
 
     public double total() {
 
+        double total = calculateRawTotal();
+
         if(shoppingList.isEmpty()) {
             return 0;
         }
 
-        total-= calculateDiscountsForOffers();
         double deliveryCharges = calculateDeliveryCharges();
 
-        return round(total + deliveryCharges);
+        return formatNumber(total + deliveryCharges);
     }
 
     private double calculateDiscountsForOffers() {
@@ -83,38 +92,27 @@ public class Basket {
         return discount;
     }
 
-    private double calculateDeliveryCharges() {
-        return extraCharges.applyToAmount(total);
+    private double formatNumber(double number) {
+        DecimalFormat formatter = new DecimalFormat("£####.##");
+        return Double.parseDouble(formatter.format(number));
+
     }
 
-    private double calculateListTotal() {
+    private double calculateDeliveryCharges() {
+        return extraCharges.applyToAmount(calculateRawTotal());
+    }
+
+    private double calculateRawTotal() {
 
         double total = 0.0;
 
-        Set<String> productCodes = shoppingList.keySet();
+        Set<Product> shoppingListProducts = shoppingList.getProducts();
+        List<String> productCodes = shoppingListProducts.stream().map(p -> p.getCode()).collect(Collectors.toList());
 
         for(String productCode : productCodes) {
-            total += (productCatalog.getPriceByCode(productCode) * shoppingList.get(productCode));
+            total += (productCatalog.getPriceByCode(productCode) * shoppingList.getMultiplicity(productCode));
         }
 
         return total;
-    }
-
-    private double round(double value) {
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(2, RoundingMode.DOWN);
-        return bd.doubleValue();
-    }
-
-    public Catalog getProductCatalog() {
-        return productCatalog;
-    }
-
-    public List<Product> getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(List<Product> shoppingList) {
-        this.shoppingList = shoppingList;
     }
 }

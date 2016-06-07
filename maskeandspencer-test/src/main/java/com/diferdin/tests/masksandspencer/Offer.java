@@ -17,5 +17,5 @@ public abstract class Offer {
         Offers.add(this);
     }
 
-    abstract double applyToList(List<Product> shoppingList);
+    abstract double applyToList(ShoppingList shoppingList);
 }
