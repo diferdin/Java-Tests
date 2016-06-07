@@ -2,9 +2,6 @@ package com.diferdin.tests.masksandspencer;
 
 import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,15 +69,13 @@ public class Basket {
 
     public double total() {
 
-        double total = calculateRawTotal();
-
         if(shoppingList.isEmpty()) {
             return 0;
         }
 
-        double deliveryCharges = calculateDeliveryCharges();
+        double finalTotal = calculateRawTotal() - calculateDiscountsForOffers();
 
-        return formatNumber(total + deliveryCharges);
+        return Utils.formatNumber(finalTotal + calculateDeliveryCharges());
     }
 
     private double calculateDiscountsForOffers() {
@@ -90,12 +85,6 @@ public class Basket {
         }
 
         return discount;
-    }
-
-    private double formatNumber(double number) {
-        DecimalFormat formatter = new DecimalFormat("£####.##");
-        return Double.parseDouble(formatter.format(number));
-
     }
 
     private double calculateDeliveryCharges() {
@@ -110,7 +99,9 @@ public class Basket {
         List<String> productCodes = shoppingListProducts.stream().map(p -> p.getCode()).collect(Collectors.toList());
 
         for(String productCode : productCodes) {
-            total += (productCatalog.getPriceByCode(productCode) * shoppingList.getMultiplicity(productCode));
+            double price = productCatalog.getPriceByCode(productCode);
+            int multiplicity = shoppingList.getMultiplicity(productCode);
+            total += (productCatalog.getPriceByCode(productCode) * multiplicity);
         }
 
         return total;

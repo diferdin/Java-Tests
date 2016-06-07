@@ -33,25 +33,23 @@ public class CatalogTest {
         Product blouse = new Product("Blouse", "B01", 24.95);
         Product socks = new Product("Socks", "S01", 7.95);
 
-
         assertEquals(catalog.size(), 3);
-        assertEquals(catalog.get(jeans.getName()).get(), jeans);
-        assertEquals(catalog.get(blouse.getName()).get(), blouse);
-        assertEquals(catalog.get(socks.getName()).get(), socks);
+        assertEquals(catalog.getProduct(jeans.getCode()).get(), jeans);
+        assertEquals(catalog.getProduct(blouse.getCode()).get(), blouse);
+        assertEquals(catalog.getProduct(socks.getCode()).get(), socks);
     }
 
     @Test
     public void shouldNotGetProducts() {
-        assertEquals(catalog.get("Trousers"), Optional.empty());
-        assertEquals(catalog.get("J02"), Optional.empty());
+        assertEquals(catalog.getProduct("Trousers"), Optional.empty());
+        assertEquals(catalog.getProduct("J02"), Optional.empty());
     }
 
     @Test
     public void shouldContainProducts() {
         Product jeans = new Product("Jeans", "J01", 32.95);
 
-        assertTrue(catalog.contains(jeans));
-        assertTrue(catalog.contains(jeans.getName()));
+        assertTrue(catalog.contains(jeans.getCode()));
     }
 
     @Test

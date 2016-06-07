@@ -7,68 +7,81 @@ import java.util.stream.Collectors;
  * Created by LONADF on 07/06/2016.
  */
 public class ShoppingList {
-    Map<Product, Integer> list;
+    Map<Product, Integer> map;
 
-    public boolean add(Product product) {
-        if(list == null) {
-            list = new HashMap<>();
+    public ShoppingList() {
+        map = new HashMap<>();
+    }
+
+    public void add(Product product) {
+        if(map == null) {
+            map = new HashMap<>();
         }
 
-        if(list.isEmpty() || !list.containsKey(product)) {
-            list.put(product, 1);
-            return true;
-        }
+        List<String> productCodes = map.keySet().stream().map(p -> p.getCode()).collect(Collectors.toList());
 
-        int productMultiplicity = list.get(product);
-        list.put(product, productMultiplicity++);
-        return true;
+        if(map.isEmpty() || !productCodes.contains(product.getCode())) {
+            map.put(product, 1);
+        } else {
+            increaseMultiplicity(product);
+        }
+    }
+
+    private void increaseMultiplicity(Product product) {
+        int productMultiplicity = getMultiplicity(product.getCode());
+        productMultiplicity++;
+        map.replace(product, productMultiplicity);
     }
 
     public boolean remove(Product product) {
-        if(list == null) {
-            list = new HashMap<>();
+        if(map == null) {
+            map = new HashMap<>();
             return false;
         }
 
-        if(list.isEmpty()) {
+        if(map.isEmpty()) {
             return false;
         }
 
-        if(list.containsKey(product)) {
-            int multiplicity = list.get(product);
+        if(map.containsKey(product)) {
+            int multiplicity = map.get(product);
             multiplicity--;
 
             if(multiplicity == 0) {
-                list.remove(product);
+                map.remove(product);
             } else {
-                list.put(product, multiplicity);
+                map.put(product, multiplicity);
             }
         }
         return true;
     }
 
     public boolean contains(Product product) {
-        return list.containsKey(product);
+        return map.containsKey(product);
     }
 
     public Set<Product> getProducts() {
-        return list.keySet();
+        return map.keySet();
     }
 
     public int getMultiplicity(String productCode) {
-        return list.get(productCode);
+        Optional<Product> product = getProduct(productCode);
+        if(product.isPresent()) {
+            return map.get(product.get());
+        }
+        return 0;
     }
 
     public boolean isEmpty() {
-        return list.isEmpty();
+        return map.isEmpty();
     }
 
     public int size() {
-        return list.size();
+        return map.size();
     }
 
     public Optional<Product> getProduct(String productCode) {
-        Set<Product> products = list.keySet();
+        Set<Product> products = map.keySet();
 
         List<Product> productList = products.stream().filter(p -> productCode.equals(p.getCode())).collect(Collectors.toList());
 

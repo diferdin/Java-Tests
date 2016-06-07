@@ -14,7 +14,6 @@ public abstract class Offer {
     public Offer(String offerSubject, String offerName) {
         this.offerName = offerName;
         this.offerSubject = offerSubject;
-        Offers.add(this);
     }
 
     abstract double applyToList(ShoppingList shoppingList);

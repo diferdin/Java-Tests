@@ -2,12 +2,7 @@ package com.diferdin.tests.masksandspencer;
 
 import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by antonio on 01/06/2016.
@@ -24,8 +19,12 @@ public class BuyOneGetOneHalfPrice extends Offer {
 
         Optional<String> productCodeOnOffer = shoppingList.getProducts()
                 .stream()
-                .filter(p -> offerSubject.equals(p))
+                .filter(p -> offerSubject.equals(p.getCode()))
                 .map(p -> p.getCode()).findFirst();
+
+        if(!productCodeOnOffer.isPresent()) {
+            return 0.0; //No products are on offer from the shopping list
+        }
 
         Optional<Product> productOnOfferOptional = shoppingList.getProduct(productCodeOnOffer.get());
 
@@ -35,15 +34,8 @@ public class BuyOneGetOneHalfPrice extends Offer {
 
         Product productOnOffer = productOnOfferOptional.get();
         double itemsToDiscount = shoppingList.getMultiplicity(productOnOffer.getCode()) / 2;
-        discount += productOnOffer.getPrice() * itemsToDiscount;
+        discount += itemsToDiscount * productOnOffer.getPrice()/2;
 
-        return round(discount);
-    }
-
-    private double round(double value) {
-        //return (double) Math.round(value * 99) / 99;
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(2, RoundingMode.DOWN);
-        return bd.doubleValue();
+        return Utils.formatNumber(discount);
     }
 }

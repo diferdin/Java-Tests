@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,16 +17,27 @@ import static org.junit.Assert.assertEquals;
 
 public class BasketTest {
 
+    private ShoppingList shoppingList;
+    private Catalog productCatalog;
+    private List<Offer> offers;
+    DeliveryCharge deliveryCharge;
+
+    @Before
+    public void configureTest() {
+        shoppingList = new ShoppingList();
+        productCatalog = buildCatalog();
+        offers = buildOffers();
+        deliveryCharge = buildDeliveryCharge();
+    }
+
     @Test
     public void testTotalWithDeliveryAndNoDiscount() {
-
-        List<Product> shoppingList = new ArrayList<>();
 
         shoppingList.add(new Product("Jeans", "J01", 32.95));
         shoppingList.add(new Product("Socks", "S01", 7.95));
         shoppingList.add(new Product("Blouse", "B01", 24.95));
 
-        Basket basket = new Basket(shoppingList);
+        Basket basket = new Basket(shoppingList, productCatalog, offers, deliveryCharge);
         double total = basket.total();
 
         assertEquals(total, 68.8, 0);
@@ -34,8 +46,6 @@ public class BasketTest {
     @Test
     public void testTotalWithNoDeliveryAndDiscount() {
 
-        List<Product> shoppingList = new ArrayList<>();
-
         shoppingList.add(new Product("Socks", "S01", 7.95));
         shoppingList.add(new Product("Jeans", "J01", 32.95));
         shoppingList.add(new Product("Blouse", "B01", 24.95));
@@ -44,38 +54,18 @@ public class BasketTest {
         shoppingList.add(new Product("Blouse", "B01", 24.95));
         shoppingList.add(new Product("Socks", "S01", 7.95));
 
-        Basket basket = new Basket(shoppingList);
+        Basket basket = new Basket(shoppingList, productCatalog, offers, deliveryCharge);
         double total = basket.total();
 
         assertEquals(total, 123.18, 0);
     }
 
-    @Test
-    public void shouldFlagEmptyShoppingList() {
-        List<Product> shoppingList = new ArrayList<>();
-
-        Basket basket = new Basket(shoppingList);
-        assertEquals(basket.total(), 0.0, 0);
-    }
-
     @Test(expected=ShoppingException.class)
     public void shouldThrowShoppingExceptionWhenCatalogIsEmpty() {
-        Catalogs.eraseCatalogs();
-
-        List<Product> shoppingList = new ArrayList<>();
-
         shoppingList.add(new Product("Socks", "S01", 7.95));
+        productCatalog = null;
 
-        Basket basket = new Basket(shoppingList);
-    }
-
-    @Before
-    public void buildContextObjects() {
-        Catalog catalog = buildCatalog();
-
-        Offer buyOneGetOneHaldPrice = new BuyOneGetOneHalfPrice("Jeans", "Buy one get one free on Jeans");
-
-        Charge deliveryCharge = buildDeliveryCharge();
+        Basket basket = new Basket(shoppingList, productCatalog, offers, deliveryCharge);
     }
 
     private DeliveryCharge buildDeliveryCharge() {
@@ -89,11 +79,20 @@ public class BasketTest {
     }
 
     private Catalog buildCatalog() {
-        List<Product> products = new ArrayList<>();
+        List<Product> products = new LinkedList<>();
+
         products.add(new Product("Jeans", "J01", 32.95));
         products.add(new Product("Blouse", "B01", 24.95));
         products.add(new Product("Socks", "S01", 7.95));
 
         return new Catalog(products);
+    }
+
+    private List<Offer> buildOffers() {
+        List<Offer> offers = new LinkedList<>();
+        Offer buyOneGetOneHaldPrice = new BuyOneGetOneHalfPrice("J01", "Buy one get one free on Jeans");
+        offers.add(buyOneGetOneHaldPrice);
+
+        return offers;
     }
 }

@@ -63,4 +63,9 @@ public class Product {
                 code.equals(product.getCode()) &&
                 price == product.getPrice();
     }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode();
+    }
 }

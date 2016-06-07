@@ -10,7 +10,6 @@ public class DeliveryCharge implements Charge {
 
     public DeliveryCharge(List<DeliveryChargeRule> newRules) {
         rules = newRules;
-        Charges.add(this);
     }
 
     @Override

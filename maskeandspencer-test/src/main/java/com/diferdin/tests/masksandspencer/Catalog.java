@@ -25,7 +25,6 @@ public class Catalog {
         }
 
         productCatalog.addAll(products);
-        Catalogs.add(this);
     }
 
     public Set<Product> getProducts() {

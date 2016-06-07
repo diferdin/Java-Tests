@@ -2,6 +2,7 @@ package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspen
 
 import com.diferdin.tests.masksandspencer.BuyOneGetOneHalfPrice;
 import com.diferdin.tests.masksandspencer.Product;
+import com.diferdin.tests.masksandspencer.ShoppingList;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ public class BuyOneGetOneHalfPriceTest {
 
     @Test
     public void shouldProvideDiscount() {
-        List<Product> shoppingList = new LinkedList<>();
+        ShoppingList shoppingList = new ShoppingList();
 
         shoppingList.add(new Product("Jeans", "J01", 32.95));
         shoppingList.add(new Product("Blouse", "B01", 24.95));
@@ -34,7 +35,7 @@ public class BuyOneGetOneHalfPriceTest {
         shoppingList.add(new Product("Jeans", "J01", 32.95));
         shoppingList.add(new Product("Jeans", "J01", 32.95));
 
-        BuyOneGetOneHalfPrice offer = new BuyOneGetOneHalfPrice("Jeans", "Buy one get one half price");
+        BuyOneGetOneHalfPrice offer = new BuyOneGetOneHalfPrice("J01", "Buy one get one half price");
 
         double discount = offer.applyToList(shoppingList);
 
@@ -43,7 +44,7 @@ public class BuyOneGetOneHalfPriceTest {
 
     @Test
     public void shouldNotProvideDiscount() {
-        List<Product> shoppingList = new LinkedList<>();
+        ShoppingList shoppingList = new ShoppingList();
 
         shoppingList.add(new Product("Jeans", "J01", 32.95));
         shoppingList.add(new Product("Blouse", "B01", 24.95));
