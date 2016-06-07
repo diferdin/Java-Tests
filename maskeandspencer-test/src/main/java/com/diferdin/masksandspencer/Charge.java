@@ -1,4 +1,4 @@
-package com.diferdin.tests.masksandspencer;
+package com.diferdin.masksandspencer;
 
 import java.util.List;
 

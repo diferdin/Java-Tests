@@ -1,4 +1,4 @@
-package com.diferdin.tests.masksandspencer;
+package com.diferdin.masksandspencer;
 
 /**
  * Created by antonio on 01/06/2016.

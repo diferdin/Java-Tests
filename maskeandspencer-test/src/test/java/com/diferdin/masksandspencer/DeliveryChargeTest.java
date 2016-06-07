@@ -1,7 +1,7 @@
-package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspencer;
+package com.diferdin.masksandspencer;
 
-import com.diferdin.tests.masksandspencer.DeliveryCharge;
-import com.diferdin.tests.masksandspencer.DeliveryChargeRule;
+import com.diferdin.masksandspencer.DeliveryCharge;
+import com.diferdin.masksandspencer.DeliveryChargeRule;
 import org.junit.Test;
 
 import java.util.*;

@@ -1,8 +1,7 @@
-package com.diferdin.tests.masksandspencer;
+package com.diferdin.masksandspencer;
 
-import com.diferdin.tests.masksandspencer.exception.ShoppingException;
+import com.diferdin.masksandspencer.exception.ShoppingException;
 
-import java.security.cert.PKIXRevocationChecker;
 import java.util.*;
 import java.util.stream.Collectors;
 

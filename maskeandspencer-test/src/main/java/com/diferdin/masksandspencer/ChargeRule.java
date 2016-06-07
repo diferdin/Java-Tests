@@ -1,4 +1,4 @@
-package com.diferdin.tests.masksandspencer;
+package com.diferdin.masksandspencer;
 
 /**
  * Created by LONADF on 02/06/2016.

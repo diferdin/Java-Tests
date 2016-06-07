@@ -1,7 +1,8 @@
-package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspencer;
+package com.diferdin.masksandspencer;
 
+import com.diferdin.masksandspencer.*;
+import com.diferdin.masksandspencer.exception.ShoppingException;
 import com.diferdin.tests.masksandspencer.*;
-import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 import org.junit.Before;
 import org.junit.Test;
 

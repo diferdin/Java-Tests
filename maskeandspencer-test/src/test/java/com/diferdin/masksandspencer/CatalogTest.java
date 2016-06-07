@@ -1,7 +1,7 @@
-package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspencer;
+package com.diferdin.masksandspencer;
 
-import com.diferdin.tests.masksandspencer.Catalog;
-import com.diferdin.tests.masksandspencer.Product;
+import com.diferdin.masksandspencer.Product;
+import com.diferdin.masksandspencer.Catalog;
 import org.junit.Before;
 import org.junit.Test;
 

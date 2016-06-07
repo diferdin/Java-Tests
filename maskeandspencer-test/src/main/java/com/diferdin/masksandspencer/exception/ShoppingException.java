@@ -1,4 +1,4 @@
-package com.diferdin.tests.masksandspencer.exception;
+package com.diferdin.masksandspencer.exception;
 
 /**
  * Created by antonio on 01/06/2016.

@@ -1,6 +1,6 @@
-package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspencer;
+package com.diferdin.masksandspencer;
 
-import com.diferdin.tests.masksandspencer.Product;
+import com.diferdin.masksandspencer.Product;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,6 +1,4 @@
-package com.diferdin.tests.masksandspencer;
-
-import java.util.List;
+package com.diferdin.masksandspencer;
 
 /**
  * Created by antonio on 01/06/2016.

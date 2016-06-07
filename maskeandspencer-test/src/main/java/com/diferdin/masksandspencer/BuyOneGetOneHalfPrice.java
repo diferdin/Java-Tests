@@ -1,6 +1,6 @@
-package com.diferdin.tests.masksandspencer;
+package com.diferdin.masksandspencer;
 
-import com.diferdin.tests.masksandspencer.exception.ShoppingException;
+import com.diferdin.masksandspencer.exception.ShoppingException;
 
 import java.util.Optional;
 
