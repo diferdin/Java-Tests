@@ -24,16 +24,7 @@ public class DeliveryCharge implements Charge {
 
     @Override
     public double applyToAmount(double billTotal) {
-
-        double charge = 0d;
-
-        for( DeliveryChargeRule rule : rules) {
-            if(rule.isInRange(billTotal)) {
-                charge = rule.getCharge();
-            }
-        }
-
-        return charge;
+        return rules.stream().mapToDouble(r -> r.isInRange(billTotal) ? r.getCharge() : 0).sum();
     }
 
 

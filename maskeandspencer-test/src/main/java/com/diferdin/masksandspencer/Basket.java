@@ -95,12 +95,6 @@ public class Basket {
         Set<Product> shoppingListProducts = shoppingList.getProducts();
         List<String> productCodes = shoppingListProducts.stream().map(p -> p.getCode()).collect(Collectors.toList());
 
-        for(String productCode : productCodes) {
-            double price = productCatalog.getPriceByCode(productCode);
-            int multiplicity = shoppingList.getMultiplicity(productCode);
-            total += (productCatalog.getPriceByCode(productCode) * multiplicity);
-        }
-
-        return total;
+        return productCodes.stream().mapToDouble(p -> productCatalog.getPriceByCode(p) * shoppingList.getMultiplicity(p)).sum();
     }
 }
