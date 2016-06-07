@@ -64,13 +64,7 @@ public class Catalog {
     public String toString() {
         String result = "";
 
-        Iterator<Product> productIterator = productCatalog.iterator();
-
-        while(productIterator.hasNext()) {
-            result = result + productIterator.next().toString();
-        }
-
-        return result;
+        return productCatalog.stream().map(c -> c.toString()).collect(Collectors.joining(", "));
     }
 
     public boolean contains(Product product) {

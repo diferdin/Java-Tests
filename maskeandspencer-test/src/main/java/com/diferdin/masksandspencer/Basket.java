@@ -80,11 +80,8 @@ public class Basket {
 
     private double calculateDiscountsForOffers() {
         double discount = 0d;
-        for(Offer offer : offers) {
-            discount += offer.applyToList(shoppingList);
-        }
 
-        return discount;
+        return offers.stream().mapToDouble(o -> o.applyToList(shoppingList)).sum();
     }
 
     private double calculateDeliveryCharges() {

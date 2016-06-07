@@ -1,8 +1,5 @@
 package com.diferdin.masksandspencer;
 
-import com.diferdin.masksandspencer.BuyOneGetOneHalfPrice;
-import com.diferdin.masksandspencer.Product;
-import com.diferdin.masksandspencer.ShoppingList;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +33,7 @@ public class BuyOneGetOneHalfPriceTest {
 
         double discount = offer.applyToList(shoppingList);
 
-        assertEquals(49.42, discount, 0);
+        assertEquals(49.43, discount, 0);
     }
 
     @Test

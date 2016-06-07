@@ -1,8 +1,6 @@
 package com.diferdin.masksandspencer;
 
-import com.diferdin.masksandspencer.*;
 import com.diferdin.masksandspencer.exception.ShoppingException;
-import com.diferdin.tests.masksandspencer.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,7 +56,7 @@ public class BasketTest {
         Basket basket = new Basket(shoppingList, productCatalog, offers, deliveryCharge);
         double total = basket.total();
 
-        assertEquals(total, 123.18, 0);
+        assertEquals(123.17, total, 0);
     }
 
     @Test(expected=ShoppingException.class)
