@@ -1,6 +1,6 @@
-package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspencer.tests.domain;
+package com.diferdin.tests.masksandspencer.tests.com.diferdin.tests.marksandspencer;
 
-import com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain.*;
+import com.diferdin.tests.masksandspencer.*;
 import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,8 +1,5 @@
-package com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain;
+package com.diferdin.tests.masksandspencer;
 
-import com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain.Charge;
-import com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain.ChargeType;
-import com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain.DeliveryCharge;
 import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
 import java.util.ArrayList;

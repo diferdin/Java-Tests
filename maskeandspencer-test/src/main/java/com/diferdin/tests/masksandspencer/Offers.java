@@ -1,7 +1,4 @@
-package com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain;
-
-import com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain.Catalog;
-import com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain.Offer;
+package com.diferdin.tests.masksandspencer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,6 @@
-package com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain;
+package com.diferdin.tests.masksandspencer;
+
+import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,19 +41,14 @@ public class Catalog {
         return productCatalog.size();
     }
 
-    public Optional<Product> get(String productId) {
-        Optional<Product> productByName = productCatalog.stream().filter(p -> productId.equals(p.getName())).findFirst();
-        Optional<Product> productByCode = productCatalog.stream().filter(p -> productId.equals(p.getCode())).findFirst();
-
-        if(productByName.isPresent()){
-            return productByName;
-        }
+    public double getPriceByCode(String productCode) throws ShoppingException {
+        Optional<Product> productByCode = productCatalog.stream().filter(p -> productCode.equals(p.getCode())).findFirst();
 
         if(productByCode.isPresent()) {
-            return productByCode;
+            return productByCode.get().getPrice();
         }
 
-        return Optional.empty();
+        return 0.0;
     }
 
     @Override
@@ -71,10 +68,10 @@ public class Catalog {
         return this.contains(product.getName());
     }
 
-    public boolean contains(String productName) {
+    public boolean contains(String productCode) {
         List<Product> matchingProduct = productCatalog
                 .stream()
-                .filter(p -> productName.equals(p.getName()))
+                .filter(p -> productCode.equals(p.getCode()))
                 .collect(Collectors.toList());
 
         return matchingProduct.size() == 1;

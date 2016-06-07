@@ -1,4 +1,4 @@
-package com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain;
+package com.diferdin.tests.masksandspencer;
 
 import java.util.*;
 

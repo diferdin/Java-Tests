@@ -1,58 +1,60 @@
-package com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain;
+package com.diferdin.tests.masksandspencer;
 
 import com.diferdin.tests.masksandspencer.exception.ShoppingException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by antonio on 01/06/2016.
  */
 public class Basket {
     private Catalog productCatalog;
-    private Charge deliveryCharge;
+    private Charge extraCharges;
     private List<Offer> offers;
 
-    private List<Product> shoppingList;
+    private Map<String, Integer> shoppingList;
     private double total;
 
-    public Basket(List<Product> shoppingList) {
+    public Basket(Map<String, Integer> shoppingList, Catalog productCatalog, List<Offer> offers, Charge extraCharges) {
         if(shoppingList == null) {
             throw new ShoppingException("Shopping list cannot be null");
         }
 
+        if(productCatalog == null) {
+            throw new ShoppingException("Catalog cannot be null");
+        }
+
         if(shoppingList.size() == 0) {
-            this.shoppingList = Collections.emptyList();
+            this.shoppingList = Collections.emptyMap();
             return;
         }
 
-        productCatalog = Catalogs.getForProduct(shoppingList.get(0));
-
-        if(productCatalog == null) {
-            throw new ShoppingException("No catalog found");
-        }
-        offers = Offers.getForCatalog(productCatalog);
-
-        if(productCatalog == null) {
-            throw new ShoppingException("Product could not be found on any catalog");
-        }
-
+        this.productCatalog = productCatalog;
+        this.offers = offers;
+        this.extraCharges = extraCharges;
         this.shoppingList = shoppingList;
-        total = calculateTotal();
-        deliveryCharge = Charges.getDeliveryCharge();
+        total = calculateListTotal();
+
+        if(!productsAreInCatalog()) {
+            throw new ShoppingException("Some products in the shopping list are not in the catalog.");
+        }
+
     }
 
-    public Basket() {
-        shoppingList = new ArrayList<>();
+    private boolean productsAreInCatalog() {
+        boolean result = true;
+        Set<String> productCodes = shoppingList.keySet();
+
+        for(String code : productCodes) {
+            result = result && productCatalog.contains(code);
+        }
     }
 
     public boolean add(Product product) {
 
-        if(shoppingList.add(product)) {
+        if(shoppingList.put(product.getCode())) {
             total += product.getPrice();
             return true;
         }
@@ -82,18 +84,17 @@ public class Basket {
     }
 
     private double calculateDeliveryCharges() {
-        return deliveryCharge.applyToAmount(total);
+        return extraCharges.applyToAmount(total);
     }
 
-    private double calculateTotal() {
+    private double calculateListTotal() {
 
         double total = 0.0;
 
-        Iterator shoppingListIterator = shoppingList.iterator();
+        Set<String> productCodes = shoppingList.keySet();
 
-        while(shoppingListIterator.hasNext()) {
-            Product product = (Product) shoppingListIterator.next();
-            total += product.getPrice();
+        for(String productCode : productCodes) {
+            total += (productCatalog.getPriceByCode(productCode) * shoppingList.get(productCode));
         }
 
         return total;

@@ -1,4 +1,4 @@
-package com.diferdin.tests.masksandspencer.com.diferdin.tests.marksandspencer.domain;
+package com.diferdin.tests.masksandspencer;
 
 /**
  * Created by antonio on 01/06/2016.
