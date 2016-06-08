@@ -1,2 +1,5 @@
 .gitignore
 .idea/
+basket/basket.iml
+Marketplace/Marketplace.iml
+Marketplace/target/
