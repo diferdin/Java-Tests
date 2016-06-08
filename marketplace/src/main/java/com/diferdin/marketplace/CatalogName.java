@@ -1,14 +1,14 @@
-package com.diferdin.masksandspencer;
+package com.diferdin.marketplace;
 
 /**
  * Created by LONADF on 02/06/2016.
  */
-public enum ChargeType {
-    DELIVERY_CHARGE("DELIVERY_CHARGE");
+public enum CatalogName {
+    CLOTHING("CLOTHING");
 
     private final String name;
 
-    ChargeType(String name) {
+    CatalogName(String name) {
         this.name = name;
     }
 

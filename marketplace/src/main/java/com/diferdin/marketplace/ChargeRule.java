@@ -1,4 +1,4 @@
-package com.diferdin.masksandspencer;
+package com.diferdin.marketplace;
 
 /**
  * Created by LONADF on 02/06/2016.

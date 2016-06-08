@@ -1,7 +1,5 @@
-package com.diferdin.masksandspencer;
+package com.diferdin.marketplace;
 
-import com.diferdin.masksandspencer.DeliveryCharge;
-import com.diferdin.masksandspencer.DeliveryChargeRule;
 import org.junit.Test;
 
 import java.util.*;

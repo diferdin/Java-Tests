@@ -1,6 +1,5 @@
-package com.diferdin.masksandspencer;
+package com.diferdin.marketplace;
 
-import com.diferdin.masksandspencer.Product;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

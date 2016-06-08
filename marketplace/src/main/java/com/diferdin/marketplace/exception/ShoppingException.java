@@ -1,4 +1,4 @@
-package com.diferdin.masksandspencer.exception;
+package com.diferdin.marketplace.exception;
 
 /**
  * Created by antonio on 01/06/2016.

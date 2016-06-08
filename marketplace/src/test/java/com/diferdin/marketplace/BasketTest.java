@@ -1,6 +1,6 @@
-package com.diferdin.masksandspencer;
+package com.diferdin.marketplace;
 
-import com.diferdin.masksandspencer.exception.ShoppingException;
+import com.diferdin.marketplace.exception.ShoppingException;
 import org.junit.Before;
 import org.junit.Test;
 

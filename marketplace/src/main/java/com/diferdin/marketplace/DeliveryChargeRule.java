@@ -1,4 +1,4 @@
-package com.diferdin.masksandspencer;
+package com.diferdin.marketplace;
 
 /**
  * Created by antonio on 01/06/2016.
