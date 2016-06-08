@@ -1,6 +1,6 @@
-package com.diferdin.marketplace;
+package com.diferdin.basket;
 
-import com.diferdin.marketplace.exception.ShoppingException;
+import com.diferdin.basket.exception.ShoppingException;
 import org.junit.Before;
 import org.junit.Test;
 

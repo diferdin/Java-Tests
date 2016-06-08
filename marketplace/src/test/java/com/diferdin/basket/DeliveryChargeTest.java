@@ -1,4 +1,4 @@
-package com.diferdin.marketplace;
+package com.diferdin.basket;
 
 import org.junit.Test;
 

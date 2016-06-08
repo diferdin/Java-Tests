@@ -1,4 +1,4 @@
-package com.diferdin.marketplace;
+package com.diferdin.basket;
 
 /**
  * Created by antonio on 01/06/2016.

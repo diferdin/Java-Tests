@@ -1,4 +1,4 @@
-package com.diferdin.marketplace;
+package com.diferdin.basket;
 
 /**
  * Created by LONADF on 02/06/2016.

@@ -1,6 +1,6 @@
-package com.diferdin.marketplace;
+package com.diferdin.basket;
 
-import com.diferdin.marketplace.exception.ShoppingException;
+import com.diferdin.basket.exception.ShoppingException;
 
 import java.util.*;
 import java.util.stream.Collectors;
