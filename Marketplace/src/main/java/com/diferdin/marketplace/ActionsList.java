@@ -128,4 +128,8 @@ public class ActionsList<T extends Action> {
 
         return true;
     }
+
+    public List<T> getAll() {
+        return actions;
+    }
 }

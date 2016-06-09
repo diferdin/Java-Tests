@@ -13,6 +13,9 @@ public class Order extends Action {
         this.otherPartyId = otherPartyId;
     }
 
+    public String getOtherPartyId() {
+        return otherPartyId;
+    }
 
     @Override
     public int hashCode() {

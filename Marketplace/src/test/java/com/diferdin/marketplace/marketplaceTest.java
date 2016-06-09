@@ -209,4 +209,91 @@ public class MarketplaceTest {
         assertEquals(1, marketplace.getOrders().size());
     }
 
+    @Test
+    public void shouldNotMatchAnOrderForLowPrice() {
+        Bid bid1 = new Bid("12345", 10, 25, "2");
+        marketplace.addBid(bid1);
+
+        Offer offer1 = new Offer("12345", 10, 30, "1");
+        marketplace.addOffer(offer1);
+
+        assertEquals(1, marketplace.getBids().size());
+        assertEquals(1, marketplace.getOffers().size());
+        assertEquals(0, marketplace.getOrders().size());
+    }
+
+    @Test
+    public void shouldNotMatchAnOrderForLowQuantity() {
+        Bid bid1 = new Bid("12345", 10, 25, "2");
+        marketplace.addBid(bid1);
+
+        Offer offer1 = new Offer("12345", 5, 25, "1");
+        marketplace.addOffer(offer1);
+
+        assertEquals(1, marketplace.getBids().size());
+        assertEquals(1, marketplace.getOffers().size());
+        assertEquals(0, marketplace.getOrders().size());
+    }
+
+    @Test
+    public void shouldNotMatchAnOrderForWrongItemId() {
+        Bid bid1 = new Bid("12345", 10, 25, "2");
+        marketplace.addBid(bid1);
+
+        Offer offer1 = new Offer("23456", 10, 25, "1");
+        marketplace.addOffer(offer1);
+
+        assertEquals(1, marketplace.getBids().size());
+        assertEquals(1, marketplace.getOffers().size());
+        assertEquals(0, marketplace.getOrders().size());
+    }
+
+    @Test
+    public void shouldCreateOrderForCombinedOffers() {
+        Bid bid1 = new Bid("12345", 10, 25, "2");
+        marketplace.addBid(bid1);
+
+        Offer offer1 = new Offer("12345", 5, 25, "1");
+        marketplace.addOffer(offer1);
+        Offer offer2 = new Offer("12345", 5, 25, "1");
+        marketplace.addOffer(offer2);
+
+        assertEquals(0, marketplace.getBids().size());
+        assertEquals(0, marketplace.getOffers().size());
+        assertEquals(1, marketplace.getOrders().size());
+    }
+
+    @Test
+    public void shouldListOrdersByBidderId() {
+        Bid bid1 = new Bid("12345", 10, 25, "2");
+        Bid bid2 = new Bid("23456", 25, 30, "2");
+        marketplace.addBid(bid1);
+        marketplace.addBid(bid2);
+
+        Offer offer1 = new Offer("12345", 10, 25, "2");
+        Offer offer2 = new Offer("23456", 25, 30, "3");
+        marketplace.addOffer(offer1);
+        marketplace.addOffer(offer2);
+
+        List<Order> orders = marketplace.getOrdersByBuyerId("2");
+
+        assertEquals(2, orders.size());
+    }
+
+    @Test
+    public void shouldListOrdersByOffererId() {
+        Bid bid1 = new Bid("12345", 10, 25, "1");
+        Bid bid2 = new Bid("23456", 25, 30, "2");
+        marketplace.addBid(bid1);
+        marketplace.addBid(bid2);
+
+        Offer offer1 = new Offer("12345", 10, 25, "3");
+        Offer offer2 = new Offer("23456", 25, 30, "3");
+        marketplace.addOffer(offer1);
+        marketplace.addOffer(offer2);
+
+        List<Order> orders = marketplace.getOrdersByOffererId("3");
+
+        assertEquals(2, orders.size());
+    }
 }

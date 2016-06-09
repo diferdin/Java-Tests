@@ -36,8 +36,16 @@ public class Marketplace {
         return bidsList.add(bid);
     }
 
-    public boolean addOffer(Offer offer) {
-        boolean offerAdded = offersList.add(offer);
+    public boolean addOffer(Offer originalOffer) {
+        boolean offerAdded = offersList.add(originalOffer);
+
+        Optional<Offer> optionalOffer = offersList.get(originalOffer.getId());
+
+        if(!optionalOffer.isPresent()) {
+            throw new OrderException("Could not retrieve offer for bid");
+        }
+
+        Offer offer = optionalOffer.get();
 
         if (offerMatchesBids(offer)) {
             Optional<Bid> matchingBidOptional = getMatchingBid(offer);
@@ -195,5 +203,15 @@ public class Marketplace {
 
     public ActionsList<Order> getOrders() {
         return ordersList;
+    }
+
+    public List<Order> getOrdersByBuyerId(String bidderId) {
+        return ordersList.retrieveActionsByUser(bidderId);
+    }
+
+    public List<Order> getOrdersByOffererId(String offererId) {
+        List<Order> orders = ordersList.getAll();
+
+        return orders.stream().filter(o -> o.getOtherPartyId().equals(offererId)).collect(Collectors.toList());
     }
 }
