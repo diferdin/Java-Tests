@@ -2,8 +2,7 @@ package com.diferdin.marketplace;
 
 import com.diferdin.marketplace.exception.OrderException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -96,7 +95,7 @@ public class Marketplace {
         }
 
         List<Offer> matchingOffers = offersOnItem.stream()
-                .filter(o -> o.getPricePerUnit() <= bid.pricePerUnit)
+                .filter(o -> o.getPricePerUnit() <= bid.getPricePerUnit())
                 .filter(o -> o.getQuantity() >= bid.getQuantity())
                 .sorted((o1, o2) -> {
                     if (o1.getTimestamp().equals(o2.getTimestamp())) {
@@ -213,5 +212,13 @@ public class Marketplace {
         List<Order> orders = ordersList.getAll();
 
         return orders.stream().filter(o -> o.getOtherPartyId().equals(offererId)).collect(Collectors.toList());
+    }
+
+    public int getMaxBidPriceForItemId(String itemId) {
+        return bidsList.getMaxPriceForItemId(itemId);
+    }
+
+    public int getMaxOfferPriceForItemId(String itemId) {
+        return offersList.getMaxPriceForItemId(itemId);
     }
 }

@@ -132,4 +132,20 @@ public class ActionsList<T extends Action> {
     public List<T> getAll() {
         return actions;
     }
+
+//    public List<T> getByItemId(String itemId) {
+//        return actions.stream().filter(a -> a.getItemId().equals(itemId)).collect(Collectors.toList());
+//    }
+
+    public int getMaxPriceForItemId(String itemId) {
+        Optional<T> action = actions.stream()
+                .filter(a -> a.getItemId().equals(itemId))
+                .max((o1, o2) -> o1.getPricePerUnit() - o2.getPricePerUnit());
+
+        if(!action.isPresent()) {
+            return 0;
+        }
+
+        return action.get().getPricePerUnit();
+    }
 }
