@@ -5,7 +5,7 @@ package com.diferdin.marketplace;
  */
 public class Offer extends Action {
 
-    private static final String OFFER_TYPE = "OFFER";
+    private static final ActionType OFFER_TYPE = ActionType.OFFER;
 
     public Offer(String itemId, int quantity, int pricePerUnit, String user) {
         super(OFFER_TYPE, itemId, quantity, pricePerUnit, user);

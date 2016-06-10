@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public class Bid extends Action{
 
-    private static final String BID_TYPE = "BID";
+    private static final ActionType BID_TYPE = ActionType.BID;
 
     public Bid(String itemId, int quantity, int pricePerUnit, String user) {
         super(BID_TYPE, itemId, quantity, pricePerUnit, user);

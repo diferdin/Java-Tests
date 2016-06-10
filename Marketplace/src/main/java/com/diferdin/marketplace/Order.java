@@ -5,7 +5,7 @@ package com.diferdin.marketplace;
  */
 public class Order extends Action {
 
-    private static final String ORDER_TYPE = "ORDER";
+    private static final ActionType ORDER_TYPE = ActionType.ORDER;
     private final String otherPartyId;
 
     public Order(String itemId, int quantity, int pricePerUnit, String user, String otherPartyId) {
@@ -41,6 +41,6 @@ public class Order extends Action {
 
         return type.equals(order.type) &&
                 actionId.equals(order.actionId) &&
-                otherPartyId.equals(order);
+                otherPartyId.equals(order.otherPartyId);
     }
 }

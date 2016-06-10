@@ -1,5 +1,7 @@
 package com.diferdin.marketplace;
 
+import com.diferdin.marketplace.exception.ActionException;
+
 import java.time.LocalDateTime;
 
 /**
@@ -12,9 +14,21 @@ public abstract class Action implements Cloneable {
     protected String user;
     protected LocalDateTime timestamp;
     protected String actionId;
-    protected final String type;
+    protected final ActionType type;
 
-    public Action(String type, String itemId, int quantity, int pricePerUnit, String user) {
+    public Action(ActionType type, String itemId, int quantity, int pricePerUnit, String user) {
+        if(quantity <= 0) {
+            throw new ActionException("Quantity cannot be 0");
+        }
+
+        if(pricePerUnit < 0) {
+            throw new ActionException("Price per unit cannot be negative");
+        }
+
+        if(user == null || user.isEmpty() || itemId == null || itemId.isEmpty()) {
+            throw new ActionException("User and item ID have to be provided");
+        }
+
         this.itemId = itemId;
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;
@@ -25,7 +39,7 @@ public abstract class Action implements Cloneable {
         actionId = createActionId();
     }
 
-    public String getType() {
+    public ActionType getType() {
         return type;
     }
 
@@ -46,11 +60,20 @@ public abstract class Action implements Cloneable {
     }
 
     public boolean setQuantity(int quantity) {
+        if(quantity <= 0) {
+            return false;
+        }
+
         this.quantity = quantity;
+
         return true;
     }
 
     public boolean setPricePerUnit(int pricePerUnit) {
+        if(pricePerUnit < 0) {
+            return false;
+        }
+
         this.pricePerUnit = pricePerUnit;
         return true;
     }
@@ -83,7 +106,7 @@ public abstract class Action implements Cloneable {
                 itemId +
                 "_" +
                 quantity+
-                " " +
+                "_" +
                 pricePerUnit;
     }
 }
