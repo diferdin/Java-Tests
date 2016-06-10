@@ -5,11 +5,10 @@ package com.diferdin.marketplace;
  */
 public class Order extends Action {
 
-    private static final ActionType ORDER_TYPE = ActionType.ORDER;
     private final String otherPartyId;
 
     public Order(String itemId, int quantity, int pricePerUnit, String user, String otherPartyId) {
-        super(ORDER_TYPE, itemId, quantity, pricePerUnit, user);
+        super(ActionType.ORDER, itemId, quantity, pricePerUnit, user);
         this.otherPartyId = otherPartyId;
     }
 
@@ -19,7 +18,7 @@ public class Order extends Action {
 
     @Override
     public int hashCode() {
-        return ORDER_TYPE.hashCode() +
+        return ActionType.OFFER.hashCode() +
                 itemId.hashCode() +
                 String.valueOf(quantity).hashCode() +
                 String.valueOf(pricePerUnit).hashCode() +

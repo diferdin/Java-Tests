@@ -1,5 +1,7 @@
 package com.diferdin.marketplace;
 
+import com.diferdin.marketplace.exception.ActionException;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,21 +24,17 @@ public class ActionsList<T extends Action> {
         if(actions.contains(action)) {
 
             increaseQuantity(action);
-
             return true;
-        } else {
 
+        } else {
             return  actions.add(action);
         }
     }
 
     private boolean increaseQuantity(Action action) {
         for(Action actionInList : actions) {
-            if(actionInList.getItemId().equals(action.getItemId()) &&
-                    actionInList.getUser().equals(action.getUser()) &&
-                    actionInList.getPricePerUnit() == action.getPricePerUnit() &&
-                    actionInList.getType().equals(action.getType())) {
 
+            if(actionInList.equals(action)) {
                 actionInList.setQuantity(actionInList.quantity + action.getQuantity());
                 actionInList.setTimestamp(action.getTimestamp());
 
@@ -51,26 +49,46 @@ public class ActionsList<T extends Action> {
     }
 
     public Optional<T> get(String actionId) {
-        for(T action : actions) {
-            if(actionId.equals(action.getId())) {
-                return Optional.of(action);
-            }
+
+        List<T> filteredActions = actions.stream()
+                .filter(a -> a.getId().equals(actionId))
+                .collect(Collectors.toList());
+
+        if(filteredActions.size() == 0) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        if(filteredActions.size() > 1) {
+            throw new ActionException("Action with ID "+actionId+" seems to have multiple occurrences.");
+        }
+
+        return Optional.of(filteredActions.get(0));
     }
 
     public T get(int index) {
+
+        if(index < 0) {
+            throw new ActionException("Index cannot be negative.");
+        }
+
+        if(index >= actions.size()) {
+            throw new ActionException("Index exceeding actions list size.");
+        }
+
         return actions.get(index);
     }
 
     public boolean remove(T actionToRemove) {
-        for(T action : actions) {
-            if(actionToRemove.equals(action)) {
-                return actions.remove(action);
-            }
-        }
 
-        return false;
+        List<Action> filteredActions = actions.stream()
+                .filter(a -> a.equals(actionToRemove))
+                .collect(Collectors.toList());
+
+        if(filteredActions.size() != 1) {
+            return false;
+        } else {
+            return actions.remove(actionToRemove);
+        }
     }
 
     public List<T> retrieveActionsByUser(String userId) {
@@ -86,32 +104,18 @@ public class ActionsList<T extends Action> {
     }
 
     public boolean contains(Action action) {
-        if(actions == null) {
+        if(actions == null || actions.isEmpty()) {
             return false;
         }
 
-        if(actions.isEmpty()) {
-            return false;
-        }
+        List<Action> retrievedActions = actions.stream().filter(a -> a.equals(action))
+                .collect(Collectors.toList());
 
-        for(Action actionInList : actions) {
-            if(action.getItemId().equals(actionInList.getItemId()) &&
-                    action.getUser().equals(actionInList.getUser()) &&
-                    action.getType().equals(actionInList.getType()) &&
-                    action.getPricePerUnit() == actionInList.getPricePerUnit()) {
-                return true;
-            }
-        }
-
-        return false;
+        return retrievedActions.size() > 0;
     }
 
     public boolean decreaseQuantity(T action, int decrease) {
-        if(actions == null) {
-            return false;
-        }
-
-        if(actions.size() == 0) {
+        if(actions == null || actions.size() == 0) {
             return false;
         }
 

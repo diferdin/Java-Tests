@@ -29,6 +29,8 @@ public abstract class Action implements Cloneable {
             throw new ActionException("User and item ID have to be provided");
         }
 
+
+
         this.itemId = itemId;
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;
@@ -82,7 +84,6 @@ public abstract class Action implements Cloneable {
         return actionId;
     }
 
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -108,5 +109,33 @@ public abstract class Action implements Cloneable {
                 quantity+
                 "_" +
                 pricePerUnit;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) {
+            return false;
+        }
+
+        if(!Action.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+
+        final Action action = (Action)obj;
+
+        return type.equals(action.getType()) &&
+                actionId.equals(action.getId()) &&
+                pricePerUnit == action.getPricePerUnit() &&
+                itemId.equals(action.getItemId()) &&
+                user.equals(action.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return type.hashCode() +
+                itemId.hashCode() +
+                String.valueOf(quantity).hashCode() +
+                String.valueOf(pricePerUnit).hashCode() +
+                user.hashCode();
     }
 }

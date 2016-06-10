@@ -368,4 +368,84 @@ public class MarketplaceTest {
         assertEquals(21, marketplace.getMaxOfferPriceForItemId("11111"));
         assertEquals(76, marketplace.getMaxOfferPriceForItemId("22222"));
     }
+
+    @Test
+    public void shouldMatchEarliestOffer() throws InterruptedException {
+        Offer offer1 = new Offer("11111", 25, 21, "1");
+        marketplace.addOffer(offer1);
+
+        Thread.sleep(5);
+
+        Offer offer2 = new Offer("11111", 25, 21, "2");
+        marketplace.addOffer(offer2);
+
+        Thread.sleep(5);
+
+        Offer offer3 = new Offer("11111", 25, 21, "3");
+        marketplace.addOffer(offer3);
+
+        Bid bid = new Bid("11111", 25, 30, "4");
+        marketplace.addBid(bid);
+
+        assertEquals(2, marketplace.getOffers().size());
+        assertEquals(1, marketplace.getOrders().size());
+        assertEquals(0, marketplace.getBids().size());
+
+        Order order = marketplace.getOrdersByOffererId(offer1.getUser()).get(0);
+
+        assertEquals(offer1.getUser(), order.getOtherPartyId());
+    }
+
+    @Test
+    public void shouldMatchEarliestBid() throws InterruptedException {
+        Bid bid1 = new Bid("11111", 25, 21, "1");
+        marketplace.addBid(bid1);
+
+        Thread.sleep(5);
+
+        Bid bid2 = new Bid("11111", 25, 21, "2");
+        marketplace.addBid(bid2);
+
+        Thread.sleep(5);
+
+        Bid bid3 = new Bid("11111", 25, 21, "3");
+        marketplace.addBid(bid3);
+
+        Offer offer = new Offer("11111", 25, 20, "4");
+        marketplace.addOffer(offer);
+
+        assertEquals(2, marketplace.getBids().size());
+        assertEquals(1, marketplace.getOrders().size());
+        assertEquals(0, marketplace.getOffers().size());
+
+        Order order = marketplace.getOrdersByOffererId(offer.getUser()).get(0);
+
+        assertEquals(bid1.getUser(), order.getUser());
+    }
+
+    @Test
+    public void shouldPairOrders() throws InterruptedException {
+        Bid bid1 = new Bid("11111", 25, 21, "1");
+        marketplace.addBid(bid1);
+
+        Thread.sleep(5);
+
+        Bid bid2 = new Bid("11111", 25, 21, "2");
+        marketplace.addBid(bid2);
+
+        Thread.sleep(5);
+
+        Offer offer1 = new Offer("11111", 28, 20, "3");
+        marketplace.addOffer(offer1);
+
+        Thread.sleep(5);
+
+        Offer offer2 = new Offer("11111", 32, 20, "4");
+        marketplace.addOffer(offer2);
+
+        assertEquals(0, marketplace.getBids().size());
+        assertEquals(2, marketplace.getOffers().size());
+        assertEquals(2, marketplace.getOrders().size());
+    }
+
 }

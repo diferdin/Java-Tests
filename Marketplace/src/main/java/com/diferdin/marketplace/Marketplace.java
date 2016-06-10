@@ -41,7 +41,7 @@ public class Marketplace {
         Optional<Offer> optionalOffer = offersList.get(originalOffer.getId());
 
         if(!optionalOffer.isPresent()) {
-            throw new OrderException("Could not retrieve offer for bid");
+            throw new OrderException("Cannot find offer");
         }
 
         Offer offer = optionalOffer.get();
@@ -55,7 +55,7 @@ public class Marketplace {
 
             Bid matchingBid = matchingBidOptional.get();
 
-            return manageMatch(matchingBid, offer);
+            return manageMatch(matchingBid, originalOffer);
         }
 
         return offerAdded;
@@ -97,17 +97,7 @@ public class Marketplace {
         List<Offer> matchingOffers = offersOnItem.stream()
                 .filter(o -> o.getPricePerUnit() <= bid.getPricePerUnit())
                 .filter(o -> o.getQuantity() >= bid.getQuantity())
-                .sorted((o1, o2) -> {
-                    if (o1.getTimestamp().equals(o2.getTimestamp())) {
-                        return 0;
-                    }
-
-                    if (o1.getTimestamp().isBefore(o2.getTimestamp())) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }).collect(Collectors.toList());
+                .sorted((o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp())).collect(Collectors.toList());
 
         if (matchingOffers.size() == 0) {
             return Optional.empty();
@@ -126,16 +116,7 @@ public class Marketplace {
         List<Bid> matchingBids = bidsOnItem.stream()
                 .filter(b -> b.getPricePerUnit() >= offer.getPricePerUnit())
                 .filter(b -> b.getQuantity() <= offer.getQuantity())
-                .sorted((b1, b2) -> {
-                    if (b1.getTimestamp().equals(b2.getTimestamp())) {
-                        return 0;
-                    }
-                    if (b1.getTimestamp().isBefore(b2.getTimestamp())) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }).collect(Collectors.toList());
+                .sorted((b1, b2) -> b1.getTimestamp().compareTo(b2.getTimestamp())).collect(Collectors.toList());
 
         if (matchingBids.size() == 0) {
             return Optional.empty();
@@ -147,21 +128,15 @@ public class Marketplace {
     private boolean bidMatchesOffers(Bid bid) {
         Optional<Offer> matchingOffer = getMatchingOffer(bid);
 
-        if (!matchingOffer.isPresent()) {
-            return false;
-        }
+        return matchingOffer.isPresent();
 
-        return true;
     }
 
     private boolean offerMatchesBids(Offer offer) {
         Optional<Bid> matchingBid = getMatchingBid(offer);
 
-        if (!matchingBid.isPresent()) {
-            return false;
-        }
+        return matchingBid.isPresent();
 
-        return true;
     }
 
     public ActionsList<Bid> getBids() {
@@ -209,9 +184,10 @@ public class Marketplace {
     }
 
     public List<Order> getOrdersByOffererId(String offererId) {
-        List<Order> orders = ordersList.getAll();
 
-        return orders.stream().filter(o -> o.getOtherPartyId().equals(offererId)).collect(Collectors.toList());
+        return ordersList.getAll()
+                .stream().filter(o -> o.getOtherPartyId().equals(offererId))
+                .collect(Collectors.toList());
     }
 
     public int getMaxBidPriceForItemId(String itemId) {
