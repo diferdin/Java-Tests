@@ -3,3 +3,7 @@
 basket/basket.iml
 Marketplace/Marketplace.iml
 Marketplace/target/
+.DS_Store
+FizzBuzz/src/main/resources/
+FizzBuzz/target/
+FizzBuzz/FizzBuzz.iml
