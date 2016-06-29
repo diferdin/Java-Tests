@@ -29,7 +29,11 @@ public class FizzBuzzStepTwoTest {
     @Test
     public void shouldPrintLucky() {
         String output = fizzBuzzStepTwo.printFizzBuzz(30, 30);
-        assertEquals("Lucky", output);
+        assertEquals("lucky", output);
+
+        String result = fizzBuzzStepTwo.printFizzBuzz(3,3);
+
+        assertEquals("lucky", result);
     }
 
     @Test
@@ -44,13 +48,6 @@ public class FizzBuzzStepTwoTest {
         String result = fizzBuzzStepTwo.printFizzBuzz(3, 1);
 
         assertEquals("", result);
-    }
-
-    @Test
-    public void shouldPrintLucky() {
-        String result = fizzBuzzStepTwo.printFizzBuzz(3,3);
-
-        assertEquals("lucky", result);
     }
 
     @Test

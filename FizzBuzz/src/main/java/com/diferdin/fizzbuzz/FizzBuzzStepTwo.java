@@ -30,25 +30,31 @@ public class FizzBuzzStepTwo {
     }
 
     private String checkForDividers(int number) {
-        boolean dividesByThree = number % 3 == 0;
-        boolean dividesByFive = number % 5 == 0;
 
-        if (dividesByThree && dividesByFive) {
+        if(containsNumber(number, 3)) {
+            return  "lucky";
+        }
+
+        if (dividesBy(number, 3) && dividesBy(number, 5)) {
             return "fizzbuzz";
         }
 
-        if (dividesByFive) {
+        if (dividesBy(number, 5)) {
             return "buzz";
         }
 
-        if(String.valueOf(number).contains("3")) {
-            return "lucky";
-        }
-
-        if (dividesByThree) {
+        if (dividesBy(number, 3)) {
             return "fizz";
         }
 
         return String.valueOf(number);
+    }
+
+    private boolean dividesBy(int number, int divider) {
+        return number % divider == 0;
+    }
+
+    private boolean containsNumber(int numberToCheck, int numberToBeContained) {
+        return String.valueOf(numberToCheck).contains(String.valueOf(numberToBeContained));
     }
 }
